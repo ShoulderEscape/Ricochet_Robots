@@ -1,0 +1,19 @@
+*{
+    background-color: #121212;
+}
+td{
+    background-color: aliceblue;
+    width: 6vh;
+}
+tr{
+    height:6vh;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: fixed;
+}
+.target{
+    background-color: aqua !important;
+}
