@@ -1,17 +1,67 @@
+// Look at this: https://www.youtube.com/watch?v=I6AyJLMw6lQ
 const rows=16;
 const cols=16;
 window.onscroll = () => { window.scroll(0, 0); };
 var taken=[];
-var leftbottom=[];
-var rightbottom=[];
-var lefttop=[];
-var righttop=[];
+var right=[];
+var left=[];
+var roof=[];
+var bottom=[];
 
 window.onload = function(){
-    let blocks=document.querySelectorAll("td");
-    blocks.innerHtml="Hello";
-    table=document.createElement("Table");
-    for(var i=0; i<16; i++){
+    
+    //Walls
+    for(let i=0; i<8; i++){
+        x=Math.floor(Math.random()*rows/2)+1;
+        let n=x+7;
+        let text;
+        switch(i){
+            case 0:
+                console.log("here");
+                text=1+","+x;
+                taken.push(text);
+                left.push(text);
+                break;
+            case 1:
+                text=1+","+n;
+                taken.push(text);
+                right.push(text);
+                break;
+            case 2:
+                text=16+","+x;
+                taken.push(text);
+                left.push(text);
+                break;
+            case 3:
+                text=16+","+n;
+                taken.push(text);
+                right.push(text);
+                break;
+            case 4:
+                text=x+","+1;
+                taken.push(text);
+                bottom.push(text);
+                break;
+            case 5:
+                text=n+","+1;
+                taken.push(text);
+                roof.push(text);
+                break;
+            case 6:
+                text=x+","+16;
+                taken.push(text);
+                bottom.push(text);
+            case 7:
+                text=n+","+16;
+                taken.push(text);
+                roof.push(text);
+                break;
+            default:
+                alert("Faulty program");
+                break;
+        }
+    } 
+    for(let i=0; i<16; i++){
         
         var thispos;
         var j=0;
@@ -33,37 +83,41 @@ window.onload = function(){
             taken.includes( x+","+  ypos) || taken.includes( x+","+  y) || taken.includes( x+","+  yneg)|| 
             taken.includes( xpos+","+  ypos) || taken.includes( xpos+","+  y) || taken.includes( xpos+","+  yneg) ||
             (y>=rows/2-1 && y<=rows/2+2 && x>=cols/2-1 && x-1<=cols/2+2));
-        if(i<4){ leftbottom.push(thispos)
-        } else if(i<8){ rightbottom.push(thispos); 
-        } else if(i<12){ lefttop.push(thispos);
-        } else{ righttop.push(thispos);
+        if(i<4){ 
+            left.push(thispos); 
+            bottom.push(thispos);
+        } else if(i<8){ 
+            right.push(thispos); 
+            bottom.push(thispos);
+        } else if(i<12){ 
+            left.push(thispos);
+            roof.push(thispos);
+        } else{ 
+            right.push(thispos);
+            roof.push(thispos);
         }
         taken.push(thispos);
     }
-    console.log(taken);
-
+    
+    //Create Grid
+    table=document.createElement("Table");
     for(var i=1;i<rows+1; i++){
         row=document.createElement("TR");
         for(var j=1;j<cols+1; j++){
             let td=document.createElement("TD");
             var id=i+","+j;
             if(taken.includes(id)){
-                console.log("here");
-                if(leftbottom.includes(id)){
-                    td.style.borderLeft=" 5px solid black"; 
-                    td.style.borderBottom=" 5px solid black";
+                if(right.includes(id)){
+                    td.style.borderRight="5px solid black"; 
                 }
-                if(rightbottom.includes(id)){
-                    td.style.borderRight=" 5px solid black"; 
-                    td.style.borderBottom=" 5px solid black";
+                if(left.includes(id)){
+                    td.style.borderLeft="5px solid black"; 
                 }
-                if(lefttop.includes(id)){
-                    td.style.borderLeft=" 5px solid black"; 
-                    td.style.borderTop=" 5px solid black";
+                if(roof.includes(id)){
+                    td.style.borderTop="5px solid black";
                 }
-                if(righttop.includes(id)){
-                    td.style.borderRight=" 5px solid black"; 
-                    td.style.borderTop=" 5px solid black";
+                if(bottom.includes(id)){
+                    td.style.borderBottom="5px solid black";
                 }
 
 
@@ -84,7 +138,7 @@ window.onload = function(){
                 td.style.borderRight=" 5px solid black";
             }
             if(i==1){
-                td.style.borderTop=" 5px solid black";
+                td.style.borderroof=" 5px solid black";
             }
             if(i==rows){
                 td.style.borderBottom=" 5px solid black";
@@ -101,6 +155,7 @@ window.onload = function(){
     }
     document.getElementById("body").appendChild(table)
 }
+//Targeting
 function Click(element){
     if(element.classList.contains("target")){
         element.classList.remove("target");

@@ -16,4 +16,5 @@ table{
 }
 .target{
     background-color: aqua !important;
+    border-radius: 25%;
 }
