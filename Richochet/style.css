@@ -14,7 +14,12 @@ table{
     margin-right: auto;
     table-layout: fixed;
 }
+.robot{
+    border-radius: 50%;
+}
+.robot:not(.target){
+    background-color: red;
+}
 .target{
-    background-color: aqua !important;
-    border-radius: 25%;
+    background-color: aqua;
 }

@@ -15,9 +15,9 @@ window.onload = function(){
         x=Math.floor(Math.random()*rows/2)+1;
         let n=x+7;
         let text;
+        console.log(i+": "+x);
         switch(i){
             case 0:
-                console.log("here");
                 text=1+","+x;
                 taken.push(text);
                 left.push(text);
@@ -125,7 +125,6 @@ window.onload = function(){
             td.setAttribute("id",i+","+j);
             if(j==5 && i==3){
 
-                td.style.backgroundColor="red";
                 td.classList.add("robot");
                 td.setAttribute("onclick","Click(this)");
             }
@@ -192,5 +191,17 @@ function checkkey(event){
            // right arrow
         }
     }
+}
+function robotPosition(posX, posY, robot){
+    const formerrobot=document.getElementsByClassName(robot);
+    formerrobot.forEach(element => {
+        element.remove;
+    });
+
+    let position=document.getElementById(posX+","+posY);
+
+    let div=document.createElement("DIV");
+    div.classList.add(robot);
+    div.classList.add("robots");
     
 }
