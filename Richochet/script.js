@@ -123,11 +123,7 @@ window.onload = function(){
 
             }
             td.setAttribute("id",i+","+j);
-            if(j==5 && i==3){
-
-                td.classList.add("robot");
-                td.setAttribute("onclick","Click(this)");
-            }
+            
             if(j==1){
                 
                 td.style.borderLeft=" 5px solid black";
@@ -149,10 +145,47 @@ window.onload = function(){
 
 
             row.appendChild(td);
+            
         }
         table.appendChild(row);
     }
     document.getElementById("body").appendChild(table)
+
+    //Robots
+
+    for (let i = 0; i < 4; i++) {
+        let x;
+        let y;
+
+        do{
+            x=Math.floor(Math.random()*15)+1;
+            y=Math.floor(Math.random()*15)+1;
+        } while(taken.includes(x+","+y) || (y>=rows/2-1 && y<=rows/2+2 && x>=cols/2-1 && x-1<=cols/2+2))
+
+
+        switch (i) {
+            case 0:
+                createRobot(x, y, "red");
+                break;
+            case 1:
+                createRobot(x, y, "blue");
+
+                break;
+            case 2:
+                createRobot(x, y, "yellow");
+
+                break;
+            case 3:
+                createRobot(x, y, "green");
+
+                break;
+        
+            default:
+                alert("Invalid Input")
+                break;
+        }
+        
+    }
 }
 //Targeting
 function Click(element){
@@ -192,16 +225,21 @@ function checkkey(event){
         }
     }
 }
-function robotPosition(posX, posY, robot){
+function createRobot(posX, posY, robot){
     const formerrobot=document.getElementsByClassName(robot);
-    formerrobot.forEach(element => {
-        element.remove;
-    });
+    if(formerrobot.length>0){
+        formerrobot.forEach(element => {
+            element.remove;
+        });
+    }
+    
 
     let position=document.getElementById(posX+","+posY);
 
     let div=document.createElement("DIV");
     div.classList.add(robot);
-    div.classList.add("robots");
-    
+    div.classList.add("robot");
+    div.innerHTML=""
+    position.appendChild(div);
+
 }

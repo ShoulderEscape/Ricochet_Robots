@@ -2,7 +2,7 @@
     background-color: #121212;
 }
 td{
-    background-color: aliceblue;
+    background-color: grey;
     width: 6vh;
 }
 tr{
@@ -16,10 +16,21 @@ table{
 }
 .robot{
     border-radius: 50%;
-}
-.robot:not(.target){
-    background-color: red;
+    width: 6vh;
+    height: 6vh;
 }
 .target{
     background-color: aqua;
+}
+.red{
+    background-color: red;
+}
+.blue{
+    background-color: blue;
+}
+.yellow{
+    background-color: yellow;
+}
+.green{
+    background-color: green;
 }
