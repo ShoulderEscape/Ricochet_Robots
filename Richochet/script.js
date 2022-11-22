@@ -240,6 +240,7 @@ function createRobot(posX, posY, robot){
     div.classList.add(robot);
     div.classList.add("robot");
     div.innerHTML=""
+    div.setAttribute("onclick", "Click(this)")
     position.appendChild(div);
 
 }

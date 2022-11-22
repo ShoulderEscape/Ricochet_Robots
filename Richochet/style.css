@@ -20,7 +20,7 @@ table{
     height: 6vh;
 }
 .target{
-    background-color: aqua;
+    background-color: gold !important;
 }
 .red{
     background-color: red;
