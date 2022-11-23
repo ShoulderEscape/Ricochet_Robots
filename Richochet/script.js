@@ -15,7 +15,7 @@ window.onload = function(){
         x=Math.floor(Math.random()*rows/2)+1;
         let n=x+7;
         let text;
-        console.log(i+": "+x);
+        //console.log(i+": "+x);
         switch(i){
             case 0:
                 text=1+","+x;
@@ -181,7 +181,7 @@ window.onload = function(){
                 break;
         
             default:
-                alert("Invalid Input")
+                alert("Invalid Input");
                 break;
         }
         
@@ -189,13 +189,13 @@ window.onload = function(){
 }
 //Targeting
 function Click(element){
-    if(element.classList.contains("target")){
-        element.classList.remove("target");
-        
-    }else{
-        element.classList.add("target");
-
+    const targets=document.getElementsByClassName("target");
+    if(targets.length>0){
+        targets[0].classList.remove("target");
+        targets.classList.remove("target");
     }
+     
+    element.classList.add("target");
 }
 //Travelling
 window.addEventListener('onkeypress', checkkey());
@@ -211,7 +211,7 @@ function checkkey(event){
 
         if (event.keyCode == '38') {
             // up arrow
-            document.getElementById(x+","+ y+1)
+            document.getElementById(x+","+ y+1);
             alert("here");
         }
         else if (event.keyCode == '40') {
@@ -239,7 +239,6 @@ function createRobot(posX, posY, robot){
     let div=document.createElement("DIV");
     div.classList.add(robot);
     div.classList.add("robot");
-    div.innerHTML=""
     div.setAttribute("onclick", "Click(this)")
     position.appendChild(div);
 
