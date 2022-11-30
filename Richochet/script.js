@@ -190,26 +190,32 @@ window.onload = function(){
 //Targeting
 function Click(element){
     const targets=document.getElementsByClassName("target");
-    if(targets.length>0){
-        targets[0].classList.remove("target");
-        targets.classList.remove("target");
+    if(element.classList.contains("target")){
+        element.classList.remove("target")
+    } else{
+        if(targets.length>0){
+            targets[0].classList.remove("target");
+        }
+         
+        element.classList.add("target");
     }
-     
-    element.classList.add("target");
+    
 }
 //Travelling
-window.addEventListener('onkeypress', checkkey());
+document.addEventListener('keypress', checkkey);
 
 function checkkey(event){
-    event = event || window.event;
-    if(document.getElementsByClassName("target")==1){
-        let id=document.getElementsByClassName("target").id;
+
+    if(document.getElementsByClassName("target").length==1){
+        console.log("Here")
+        let ID=document.getElementsByClassName("target").id;
+        console.log(ID);
         let positions=id.split(',');
         var x=positions[0];
         var y=positions[1];
         document.getElementById(id).classList.remove("target");
 
-        if (event.keyCode == '38') {
+        if (event== 'w') {
             // up arrow
             document.getElementById(x+","+ y+1);
             alert("here");
