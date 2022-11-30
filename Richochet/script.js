@@ -122,7 +122,7 @@ window.onload = function(){
 
 
             }
-            td.setAttribute("id",i+","+j);
+            td.setAttribute('id',i+","+j);
             
             if(j==1){
                 
@@ -143,7 +143,6 @@ window.onload = function(){
                 td.style.backgroundColor="black";
             }
 
-
             row.appendChild(td);
             
         }
@@ -160,7 +159,9 @@ window.onload = function(){
         do{
             x=Math.floor(Math.random()*15)+1;
             y=Math.floor(Math.random()*15)+1;
-        } while(taken.includes(x+","+y) || (y>=rows/2-1 && y<=rows/2+2 && x>=cols/2-1 && x-1<=cols/2+2))
+        } while(taken.includes(x+","+y) 
+        || (y>=rows/2-1 && y<=rows/2+2 && x>=cols/2-1 && x-1<=cols/2+2) 
+        || document.getElementById(x+","+y).classList.contains("robot"));
 
 
         switch (i) {
@@ -169,24 +170,20 @@ window.onload = function(){
                 break;
             case 1:
                 createRobot(x, y, "blue");
-
                 break;
             case 2:
                 createRobot(x, y, "yellow");
-
                 break;
             case 3:
                 createRobot(x, y, "green");
-
                 break;
-        
             default:
                 alert("Invalid Input");
                 break;
-        }
-        
+        }        
     }
 }
+
 //Targeting
 function Click(element){
     const targets=document.getElementsByClassName("target");
@@ -195,30 +192,34 @@ function Click(element){
     } else{
         if(targets.length>0){
             targets[0].classList.remove("target");
-        }
-         
+        }         
         element.classList.add("target");
-    }
-    
+    }    
 }
 //Travelling
-document.addEventListener('keypress', checkkey);
-
+document.onkeydown=checkkey;
 function checkkey(event){
 
+
     if(document.getElementsByClassName("target").length==1){
+
+        let element=document.getElementsByClassName("target")[0].parentNode;
         console.log("Here")
-        let ID=document.getElementsByClassName("target").id;
-        console.log(ID);
-        let positions=id.split(',');
+        let ID=element.id;
+        console.log(element);
+        console.log(ID+" ");
+        let positions=ID.split(',');
         var x=positions[0];
         var y=positions[1];
-        document.getElementById(id).classList.remove("target");
+        document.getElementById(ID).classList.remove("target");
+        console.log(event.keyCode);
 
-        if (event== 'w') {
+        if (event.keyCode== '38') {
             // up arrow
-            document.getElementById(x+","+ y+1);
-            alert("here");
+            while(roof.includes(x+","+y) || bottom.includes(x+","+y+1) || document.getElementById(x+","+y+1).classList.includes("robot")){
+                y++;
+            }
+            alert("x: "+x+"y: "+y);
         }
         else if (event.keyCode == '40') {
             // down arrow
@@ -229,6 +230,7 @@ function checkkey(event){
         else if (event.keyCode == '39') {
            // right arrow
         }
+        
     }
 }
 function createRobot(posX, posY, robot){
