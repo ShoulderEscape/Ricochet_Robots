@@ -1,8 +1,11 @@
 // Look at this: https://www.youtube.com/watch?v=I6AyJLMw6lQ
+
 const rows=16;
 const cols=16;
 window.onscroll = () => { window.scroll(0, 0); };
+var moves=0;
 var taken=[];
+var goalpositions=[];
 var right=[];
 var left=[];
 var roof=[];
@@ -12,7 +15,7 @@ window.onload = function(){
     
     //Walls
     for(let i=0; i<8; i++){
-        x=Math.floor(Math.random()*rows/2)+1;
+        x=Math.floor(Math.random()*rows/2);
         let n=x+7;
         let text;
         //console.log(i+": "+x);
@@ -97,6 +100,7 @@ window.onload = function(){
             roof.push(thispos);
         }
         taken.push(thispos);
+        goalpositions.push(thispos);
     }
     
     //Create Grid
@@ -166,22 +170,23 @@ window.onload = function(){
 
         switch (i) {
             case 0:
-                createRobot(x, y, "red");
+                createRobot(x, y, "red", false);
                 break;
             case 1:
-                createRobot(x, y, "blue");
+                createRobot(x, y, "blue", false);
                 break;
             case 2:
-                createRobot(x, y, "yellow");
+                createRobot(x, y, "yellow", false);
                 break;
             case 3:
-                createRobot(x, y, "green");
+                createRobot(x, y, "green", false);
                 break;
             default:
                 alert("Invalid Input");
                 break;
         }        
     }
+    goal();
 }
 
 //Targeting
@@ -204,7 +209,6 @@ function checkkey(event){
     if(document.getElementsByClassName("target").length==1){
 
         let element=document.getElementsByClassName("target")[0].parentNode;
-        console.log("Here")
         let ID=element.id;
         console.log(element);
         console.log(ID+" ");
@@ -212,14 +216,21 @@ function checkkey(event){
         var x=positions[0];
         var y=positions[1];
         document.getElementById(ID).classList.remove("target");
-        console.log(event.keyCode);
 
         if (event.keyCode== '38') {
             // up arrow
-            while(roof.includes(x+","+y) || bottom.includes(x+","+y+1) || document.getElementById(x+","+y+1).classList.includes("robot")){
-                y++;
+            moves++;
+            let xAdd=1*y+1;
+            console.log(xAdd+","+y);
+            console.log(document.getElementById(xAdd+","+y));
+            while(roof.includes(x+","+y) || bottom.includes(xAdd+","+y) || 
+            document.getElementById(xAdd+","+y).getElementsByTagName[0].classList.includes("robot")){
+                xAdd++;
+                x=1*x+1;
+                console.log("Here: X: "+x);
             }
-            alert("x: "+x+"y: "+y);
+            
+
         }
         else if (event.keyCode == '40') {
             // down arrow
@@ -230,10 +241,19 @@ function checkkey(event){
         else if (event.keyCode == '39') {
            // right arrow
         }
+        if(event.classList.includes("red"   ))createRobot(x,y,"red"   );
+        if(event.classList.includes("blue"  ))createRobot(x,y,"blue"  );
+        if(event.classList.includes("yellow"))createRobot(x,y,"yellow");
+        if(event.classList.includes("green" ))createRobot(x,y,"green" );
+
+        element.removeChild[0];
+        document.getElementById("moves").innerHTML="Moves: "+moves;
+        wincheck();
+        if(document.getElementsByClassName("target")[0].parentNode.classList.includes("goal")) goal();
         
     }
 }
-function createRobot(posX, posY, robot){
+function createRobot(posX, posY, robot, stayTargeted=true){
     const formerrobot=document.getElementsByClassName(robot);
     if(formerrobot.length>0){
         formerrobot.forEach(element => {
@@ -241,13 +261,53 @@ function createRobot(posX, posY, robot){
         });
     }
     
+    
 
     let position=document.getElementById(posX+","+posY);
 
     let div=document.createElement("DIV");
+    if(stayTargeted){
+        div.classList.add("target");
+    }
     div.classList.add(robot);
     div.classList.add("robot");
     div.setAttribute("onclick", "Click(this)")
     position.appendChild(div);
+
+}
+function goal(){
+    moves=0;
+    document.getElementById("moves").innerHTML="Moves: "+moves;
+    const goals=document.getElementsByClassName("goal");
+    if(goal.length>0){
+        goals.forEach(element=>{
+            element.classList.remove("goal");
+            element.style.backgroundColor="grey";
+        });
+    }
+    let Goal = goalpositions[Math.floor(Math.random()*goalpositions.length)];
+    let GoalElement=document.getElementById(Goal);
+    GoalElement.classList.add("goal");
+    let ran=Math.floor(Math.random()*4);
+    
+    switch(ran){
+        case 0:
+            GoalElement.style.backgroundColor="red";
+        break;
+        case 1:
+            GoalElement.style.backgroundColor="blue";
+        break;
+        case 2:
+            GoalElement.style.backgroundColor="yellow";
+        break;
+        case 3:
+            GoalElement.style.backgroundColor="green";
+        break;
+        default:
+            alert(ran);
+        break;
+
+
+    }
 
 }
