@@ -144,9 +144,8 @@ window.onload = function(){
             }
 
             if(i>=rows/2 && i<=rows/2+1 && j>=cols/2 && j<=cols/2+1){
-                td.style.backgroundColor="black";
+                td.classList.add("black");
             }
-
             row.appendChild(td);
             
         }
@@ -205,60 +204,124 @@ function Click(element){
 document.onkeydown=checkkey;
 function checkkey(event){
 
+    let element=document.getElementsByClassName("target")[0].parentNode;
 
     if(document.getElementsByClassName("target").length==1){
 
-        let element=document.getElementsByClassName("target")[0].parentNode;
         let ID=element.id;
         console.log(element);
         console.log(ID+" ");
         let positions=ID.split(',');
         var x=positions[0];
         var y=positions[1];
-        document.getElementById(ID).classList.remove("target");
+        console.log(x+","+y);
+
 
         if (event.keyCode== '38') {
             // up arrow
             moves++;
-            let xAdd=1*y+1;
-            console.log(xAdd+","+y);
-            console.log(document.getElementById(xAdd+","+y));
-            while(roof.includes(x+","+y) || bottom.includes(xAdd+","+y) || 
-            document.getElementById(xAdd+","+y).getElementsByTagName[0].classList.includes("robot")){
-                xAdd++;
-                x=1*x+1;
-                console.log("Here: X: "+x);
+            let xSub=1*x-1;
+            console.log(roof.includes(x+","+y));
+            console.log(bottom.includes(xSub+","+y));
+            console.log(document.getElementById(xSub+","+y).classList.contains("robotArea"));
+            
+            while(!(roof.includes(x+","+y) || bottom.includes(xSub+","+y) || 
+            document.getElementById(xSub+","+y).classList.contains("robotArea") || 
+            document.getElementById(xSub+","+y).classList.contains("black"))){
+                console.log(document.getElementById(xSub+","+y));
+                xSub--;
+                x=1*x-1;
+                if(!(document.getElementById(xSub+","+y))){
+                    break;
+                };
             }
             
 
         }
         else if (event.keyCode == '40') {
             // down arrow
+            moves++;
+            let xAdd=1*x+1;
+            console.log(roof.includes(x+","+y));
+            console.log(bottom.includes(xAdd+","+y));
+            console.log(document.getElementById(xAdd+","+y).classList.contains("robotArea"));
+            
+            while(!(bottom.includes(x+","+y) || roof.includes(xAdd+","+y) || 
+            document.getElementById(xAdd+","+y).classList.contains("robotArea") || 
+            document.getElementById(xAdd+","+y).classList.contains("black"))){
+                console.log(document.getElementById(xAdd+","+y));
+                xAdd++;
+                x=1*x+1;
+                if(!(document.getElementById(xAdd+","+y))){
+                    break;
+                };
+            }
         }
         else if (event.keyCode == '37') {
-           // left arrow
+            // left arrow
+            moves++;
+            let ySub=1*y-1;
+            console.log(roof.includes(x+","+y));
+            console.log(bottom.includes(x+","+ySub));
+            console.log(document.getElementById(x+","+ySub).classList.contains("robotArea"));
+            
+            while(!(left.includes(x+","+y) || right.includes(x+","+ySub) || 
+            document.getElementById(x+","+ySub).classList.contains("robotArea") || 
+            document.getElementById(x+","+ySub).classList.contains("black"))){
+                console.log(document.getElementById(x+","+ySub));
+                ySub--;
+                y=1*y-1;
+                if(!(document.getElementById(x+","+ySub))){
+                    break;
+                };
+            }
         }
         else if (event.keyCode == '39') {
-           // right arrow
+            // right arrow
+            moves++;
+            let yAdd=1*y+1;
+            console.log(roof.includes(x+","+yAdd));
+            console.log(bottom.includes(x+","+yAdd));
+            console.log(document.getElementById(x+","+yAdd).classList.contains("robotArea"));
+            
+            while(!(right.includes(x+","+y) || left.includes(x+","+yAdd) || 
+            document.getElementById(x+","+yAdd).classList.contains("robotArea") || 
+            document.getElementById(x+","+yAdd).classList.contains("black"))){
+                console.log(document.getElementById(x+","+yAdd));
+                yAdd++;
+                y=1*y+1;
+                if(!(document.getElementById(x+","+yAdd))){
+                    break;
+                };
+            }
         }
-        if(event.classList.includes("red"   ))createRobot(x,y,"red"   );
-        if(event.classList.includes("blue"  ))createRobot(x,y,"blue"  );
-        if(event.classList.includes("yellow"))createRobot(x,y,"yellow");
-        if(event.classList.includes("green" ))createRobot(x,y,"green" );
-
-        element.removeChild[0];
+        let color;
+        if(document.getElementsByClassName("target")[0].classList.contains("red"   ))createRobot(x,y,"red"   ); color="red";
+        if(document.getElementsByClassName("target")[0].classList.contains("blue"  ))createRobot(x,y,"blue"  ); color="blue";
+        if(document.getElementsByClassName("target")[0].classList.contains("yellow"))createRobot(x,y,"yellow"); color="yellow";
+        if(document.getElementsByClassName("target")[0].classList.contains("green" ))createRobot(x,y,"green" ); color="green";
+        console.log(color);
         document.getElementById("moves").innerHTML="Moves: "+moves;
-        wincheck();
-        if(document.getElementsByClassName("target")[0].parentNode.classList.includes("goal")) goal();
+        console.log(document.getElementsByClassName("target")[0])
+        let parent=document.getElementsByClassName("target")[0].parentNode;
+        console.log(parent.classList.contains("goal"));
+        console.log(parent.classList.contains(color));
+        if(parent.classList.contains("goal "+color)) goal();
         
     }
 }
 function createRobot(posX, posY, robot, stayTargeted=true){
-    const formerrobot=document.getElementsByClassName(robot);
+    console.log("HEREERER");
+    const formerrobot=document.getElementsByClassName(robot+ " robot");
+    
     if(formerrobot.length>0){
-        formerrobot.forEach(element => {
-            element.remove;
-        });
+
+        console.log(formerrobot[0].parentNode);
+        const robotpos=formerrobot[0].parentNode;
+        formerrobot[0].remove();
+        
+        robotpos.classList.remove("robotArea");
+        
     }
     
     
@@ -272,17 +335,27 @@ function createRobot(posX, posY, robot, stayTargeted=true){
     div.classList.add(robot);
     div.classList.add("robot");
     div.setAttribute("onclick", "Click(this)")
+    console.log(position);
     position.appendChild(div);
+    position.classList.add("robotArea");
 
 }
 function goal(){
+    if(moves>0){
+        alert("You made it in "+moves+" moves");
+
+    }
     moves=0;
     document.getElementById("moves").innerHTML="Moves: "+moves;
     const goals=document.getElementsByClassName("goal");
     if(goal.length>0){
         goals.forEach(element=>{
             element.classList.remove("goal");
-            element.style.backgroundColor="grey";
+            element.classList.remove("red");
+            element.classList.remove("blue");
+            element.classList.remove("yellow");
+            element.classList.remove("green");
+
         });
     }
     let Goal = goalpositions[Math.floor(Math.random()*goalpositions.length)];
@@ -292,16 +365,16 @@ function goal(){
     
     switch(ran){
         case 0:
-            GoalElement.style.backgroundColor="red";
+            GoalElement.classList.add("red");
         break;
         case 1:
-            GoalElement.style.backgroundColor="blue";
+            GoalElement.classList.add("blue");
         break;
         case 2:
-            GoalElement.style.backgroundColor="yellow";
+            GoalElement.classList.add("yellow");
         break;
         case 3:
-            GoalElement.style.backgroundColor="green";
+            GoalElement.classList.add("green");
         break;
         default:
             alert(ran);

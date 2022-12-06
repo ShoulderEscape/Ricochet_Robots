@@ -4,6 +4,8 @@
 td{
     background-color: grey;
     width: 5vh;
+    color: aqua;
+    text-align: center;
 }
 tr{
     height:5vh;
@@ -27,6 +29,7 @@ table{
     width: 5vh;
     height: 5vh;
 }
+.black{background-color: black;}
 .target{background-color: black !important;}
 .red{background-color: red;}
 .blue{background-color: blue;}
