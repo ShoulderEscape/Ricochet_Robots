@@ -1,5 +1,10 @@
 // Look at this: https://www.youtube.com/watch?v=I6AyJLMw6lQ
 
+
+
+
+
+
 const rows=16;
 const cols=16;
 window.onscroll = () => { window.scroll(0, 0); };
@@ -10,8 +15,10 @@ var right=[];
 var left=[];
 var roof=[];
 var bottom=[];
+var wonsquares=[];
 
 window.onload = function(){
+    alert("Prata med Roland om att vissa inte har fått tider");
     
     //Walls
     for(let i=0; i<8; i++){
@@ -215,12 +222,17 @@ function checkkey(event){
         var x=positions[0];
         var y=positions[1];
         console.log(x+","+y);
+        
+        let startX=x;
+        let startY=y;
+        let xAdd=1*x+1;
+        let xSub=1*x-1;
+        let ySub=1*y-1;
+        let yAdd=1*y+1;
 
-
-        if (event.keyCode== '38') {
+        if (event.keyCode== '38' && document.getElementById(xSub+","+y)) {
             // up arrow
             moves++;
-            let xSub=1*x-1;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(xSub+","+y));
             console.log(document.getElementById(xSub+","+y).classList.contains("robotArea"));
@@ -238,10 +250,9 @@ function checkkey(event){
             
 
         }
-        else if (event.keyCode == '40') {
+        else if (event.keyCode == '40' && document.getElementById(xAdd+","+y)) {
             // down arrow
             moves++;
-            let xAdd=1*x+1;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(xAdd+","+y));
             console.log(document.getElementById(xAdd+","+y).classList.contains("robotArea"));
@@ -257,10 +268,9 @@ function checkkey(event){
                 };
             }
         }
-        else if (event.keyCode == '37') {
+        else if (event.keyCode == '37' && document.getElementById(x+","+ySub)) {
             // left arrow
             moves++;
-            let ySub=1*y-1;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(x+","+ySub));
             console.log(document.getElementById(x+","+ySub).classList.contains("robotArea"));
@@ -276,10 +286,9 @@ function checkkey(event){
                 };
             }
         }
-        else if (event.keyCode == '39') {
+        else if (event.keyCode == '39' && document.getElementById(x+","+yAdd)) {
             // right arrow
             moves++;
-            let yAdd=1*y+1;
             console.log(roof.includes(x+","+yAdd));
             console.log(bottom.includes(x+","+yAdd));
             console.log(document.getElementById(x+","+yAdd).classList.contains("robotArea"));
@@ -295,23 +304,41 @@ function checkkey(event){
                 };
             }
         }
-        let color;
-        if(document.getElementsByClassName("target")[0].classList.contains("red"   ))createRobot(x,y,"red"   ); color="red";
-        if(document.getElementsByClassName("target")[0].classList.contains("blue"  ))createRobot(x,y,"blue"  ); color="blue";
-        if(document.getElementsByClassName("target")[0].classList.contains("yellow"))createRobot(x,y,"yellow"); color="yellow";
-        if(document.getElementsByClassName("target")[0].classList.contains("green" ))createRobot(x,y,"green" ); color="green";
+        var color;
+        if(!(startX==x && startY==y)){
+            if(document.getElementsByClassName("target")[0].classList.contains("red"   )){
+                createRobot(x,y,"red"   ); 
+                color="red";
+            }
+            if(document.getElementsByClassName("target")[0].classList.contains("blue"  )){
+                createRobot(x,y,"blue"  ); 
+                color="blue";
+            }
+            if(document.getElementsByClassName("target")[0].classList.contains("yellow")){
+                createRobot(x,y,"yellow"); 
+                color="yellow";
+            }
+            if(document.getElementsByClassName("target")[0].classList.contains("green" )){
+                createRobot(x,y,"green" ); 
+                color="green";
+            }
+        }
+        
         console.log(color);
         document.getElementById("moves").innerHTML="Moves: "+moves;
         console.log(document.getElementsByClassName("target")[0])
         let parent=document.getElementsByClassName("target")[0].parentNode;
         console.log(parent.classList.contains("goal"));
         console.log(parent.classList.contains(color));
-        if(parent.classList.contains("goal "+color)) goal();
+        console.log(parent);
+        console.log(parent.classList.contains(color+" goal"))
+        if(parent.classList.contains("goal") && parent.classList.contains(color)){
+            goal();
+        } 
         
     }
 }
 function createRobot(posX, posY, robot, stayTargeted=true){
-    console.log("HEREERER");
     const formerrobot=document.getElementsByClassName(robot+ " robot");
     
     if(formerrobot.length>0){
@@ -341,24 +368,24 @@ function createRobot(posX, posY, robot, stayTargeted=true){
 
 }
 function goal(){
-    if(moves>0){
-        alert("You made it in "+moves+" moves");
-
-    }
+    
+    const goal=document.getElementsByClassName("goal")[0];
+    console.log(goal);
+    
     moves=0;
-    document.getElementById("moves").innerHTML="Moves: "+moves;
-    const goals=document.getElementsByClassName("goal");
-    if(goal.length>0){
-        goals.forEach(element=>{
-            element.classList.remove("goal");
-            element.classList.remove("red");
-            element.classList.remove("blue");
-            element.classList.remove("yellow");
-            element.classList.remove("green");
+    if(goal){
+        goal.classList.remove("goal");
+        goal.classList.remove("red");
+        goal.classList.remove("blue");
+        goal.classList.remove("yellow");
+        goal.classList.remove("green");
 
-        });
     }
-    let Goal = goalpositions[Math.floor(Math.random()*goalpositions.length)];
+    let Goal;
+    do{
+        Goal = goalpositions[Math.floor(Math.random()*goalpositions.length)];
+    }while(wonsquares.includes(Goal));
+    wonsquares.push(Goal);
     let GoalElement=document.getElementById(Goal);
     GoalElement.classList.add("goal");
     let ran=Math.floor(Math.random()*4);
@@ -382,5 +409,12 @@ function goal(){
 
 
     }
+    if(moves>0){
+        alert("You made it in "+moves+" moves");
+
+    }
+    
+    document.getElementById("moves").innerHTML="Moves: "+moves;
+
 
 }

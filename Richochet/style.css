@@ -5,7 +5,6 @@ td{
     background-color: grey;
     width: 5vh;
     color: aqua;
-    text-align: center;
 }
 tr{
     height:5vh;
@@ -26,11 +25,14 @@ table{
 }
 .robot{
     border-radius: 50%;
-    width: 5vh;
-    height: 5vh;
+    width: 4vh;
+    height: 4vh;
+    margin: auto;
+    filter: brightness(75%);
+    transition: all 1s;
 }
 .black{background-color: black;}
-.target{background-color: black !important;}
+.target{filter: brightness(100%);}
 .red{background-color: red;}
 .blue{background-color: blue;}
 .yellow{background-color: yellow;}
