@@ -1,14 +1,9 @@
-// Look at this: https://www.youtube.com/watch?v=I6AyJLMw6lQ
-
-
-
-
-
 
 const rows=16;
 const cols=16;
 window.onscroll = () => { window.scroll(0, 0); };
 var moves=0;
+var totalmoves=0;
 var taken=[];
 var goalpositions=[];
 var right=[];
@@ -16,9 +11,15 @@ var left=[];
 var roof=[];
 var bottom=[];
 var wonsquares=[];
+var startBlue;
+var startRed;
+var startYellow;
+var startGreen;
+
+
+
 
 window.onload = function(){
-    alert("Prata med Roland om att vissa inte har fått tider");
     
     //Walls
     for(let i=0; i<8; i++){
@@ -211,9 +212,26 @@ function Click(element){
 document.onkeydown=checkkey;
 function checkkey(event){
 
-    let element=document.getElementsByClassName("target")[0].parentNode;
+    if(event.keyCode=="82"){
+        //Reset button
+        let blueValues=startBlue.split(',');
+        let greenValues=startGreen.split(',');
+        let redValues=startRed.split(',');
+        let yellowValues=startYellow.split(',');
+       
 
+
+        createRobot(blueValues[0],blueValues[1],"blue",false);
+        createRobot(greenValues[0],greenValues[1],"green",false);
+        createRobot(redValues[0],redValues[1],"red",false);
+        createRobot(yellowValues[0],yellowValues[1],"yellow",false);
+        moves=0;
+        
+    }
+
+    
     if(document.getElementsByClassName("target").length==1){
+        let element=document.getElementsByClassName("target")[0].parentNode;
 
         let ID=element.id;
         console.log(element);
@@ -232,7 +250,6 @@ function checkkey(event){
 
         if (event.keyCode== '38' && document.getElementById(xSub+","+y)) {
             // up arrow
-            moves++;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(xSub+","+y));
             console.log(document.getElementById(xSub+","+y).classList.contains("robotArea"));
@@ -252,7 +269,6 @@ function checkkey(event){
         }
         else if (event.keyCode == '40' && document.getElementById(xAdd+","+y)) {
             // down arrow
-            moves++;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(xAdd+","+y));
             console.log(document.getElementById(xAdd+","+y).classList.contains("robotArea"));
@@ -267,10 +283,10 @@ function checkkey(event){
                     break;
                 };
             }
+            
         }
         else if (event.keyCode == '37' && document.getElementById(x+","+ySub)) {
             // left arrow
-            moves++;
             console.log(roof.includes(x+","+y));
             console.log(bottom.includes(x+","+ySub));
             console.log(document.getElementById(x+","+ySub).classList.contains("robotArea"));
@@ -288,7 +304,6 @@ function checkkey(event){
         }
         else if (event.keyCode == '39' && document.getElementById(x+","+yAdd)) {
             // right arrow
-            moves++;
             console.log(roof.includes(x+","+yAdd));
             console.log(bottom.includes(x+","+yAdd));
             console.log(document.getElementById(x+","+yAdd).classList.contains("robotArea"));
@@ -306,6 +321,7 @@ function checkkey(event){
         }
         var color;
         if(!(startX==x && startY==y)){
+            moves++;
             if(document.getElementsByClassName("target")[0].classList.contains("red"   )){
                 createRobot(x,y,"red"   ); 
                 color="red";
@@ -358,11 +374,12 @@ function createRobot(posX, posY, robot, stayTargeted=true){
     let div=document.createElement("DIV");
     if(stayTargeted){
         div.classList.add("target");
-    }
+    } 
     div.classList.add(robot);
     div.classList.add("robot");
     div.setAttribute("onclick", "Click(this)")
     console.log(position);
+    
     position.appendChild(div);
     position.classList.add("robotArea");
 
@@ -371,8 +388,9 @@ function goal(){
     
     const goal=document.getElementsByClassName("goal")[0];
     console.log(goal);
-    
+    totalmoves++;
     moves=0;
+    
     if(goal){
         goal.classList.remove("goal");
         goal.classList.remove("red");
@@ -386,9 +404,17 @@ function goal(){
         Goal = goalpositions[Math.floor(Math.random()*goalpositions.length)];
     }while(wonsquares.includes(Goal));
     wonsquares.push(Goal);
+    if(wonsquares.length==goalpositions.length){
+        alert("All squares are finished!")
+    }
     let GoalElement=document.getElementById(Goal);
     GoalElement.classList.add("goal");
     let ran=Math.floor(Math.random()*4);
+
+    startBlue=document.getElementsByClassName("blue")[0].parentNode.id;
+    startRed=document.getElementsByClassName("red")[0].parentNode.id;
+    startYellow=document.getElementsByClassName("yellow")[0].parentNode.id;
+    startGreen=document.getElementsByClassName("green")[0].parentNode.id;
     
     switch(ran){
         case 0:

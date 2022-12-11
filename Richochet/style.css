@@ -37,3 +37,13 @@ table{
 .blue{background-color: blue;}
 .yellow{background-color: yellow;}
 .green{background-color: green;}
+@media only screen and (orientation: portrait) {
+    .robot{
+        width: 2.5vh;
+        height: 2.5vh;
+    }
+    td{
+        width: 3vh;
+    }
+
+  }
