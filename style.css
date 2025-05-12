@@ -1,0 +1,49 @@
+*{
+    background-color: #121212;
+}
+td{
+    background-color: grey;
+    width: 5vh;
+    color: aqua;
+}
+tr{
+    height:5vh;
+}
+aside{
+    color: aliceblue;
+    align-content: center;
+}
+#moves{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+    table-layout: fixed;
+}
+.robot{
+    border-radius: 50%;
+    width: 4vh;
+    height: 4vh;
+    margin: auto;
+    filter: brightness(75%);
+    transition: all 1s;
+}
+.black{background-color: black;}
+.target{filter: brightness(100%);}
+.red{background-color: red;}
+.blue{background-color: blue;}
+.yellow{background-color: yellow;}
+.green{background-color: green;}
+@media only screen and (orientation: portrait) {
+    .robot{
+        width: 2.5vh;
+        height: 2.5vh;
+    }
+    td{
+        width: 3vh;
+    }
+
+  }
